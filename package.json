@@ -1,0 +1,37 @@
+{
+  "name": "@felibs/request-hooks",
+  "version": "1.0.0",
+  "description": "request hooks",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felibs/reqeust.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felibs/reqeust/issues"
+  },
+  "homepage": "https://github.com/felibs/reqeust#readme",
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "jest": "^25.3.0",
+    "rollup": "^2.6.1",
+    "ts-jest": "^25.3.1",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@vue/composition-api": "^0.5.0",
+    "axios": "^0.19.2",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
+    "vue": "^2.6.11"
+  }
+}
