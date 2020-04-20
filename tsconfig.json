@@ -11,7 +11,6 @@
         "types": ["jest"],
         "rootDir": ".",
         "target": "es5",
-        // "lib": ["dom", "esnext"],
         "lib": ["esnext", "dom", "dom.iterable", "scripthost", "ES2017.Object"],
         "declaration": true,
         "module": "esnext",
@@ -30,6 +29,9 @@
         "downlevelIteration": true,
         "noUnusedLocals": true
     },
-    "include": ["lib", "lib/__tests__", "test-dts"],
-    "exclude": ["node_modules"]
+    "include": ["lib", "lib/__tests__"],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
 }

@@ -3,7 +3,7 @@
 // Vue.use(VueCompositionApi);
 import { useRequest } from '../index'
 import * as sinon from 'sinon'
-import { nextTick, ref } from '@vue/runtime-core'
+import { nextTick, ref } from 'vue'
 
 const sleep = (timer: number) => {
     return new Promise((resolve) => {
