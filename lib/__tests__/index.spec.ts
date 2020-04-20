@@ -215,17 +215,14 @@ describe('request', () => {
 
     // 可以实现多个loading
     it('request options refreshDeps', async () => {
-        let count = 0
-        // const func = jest.fn().mockImplementation(async () => { console.log('----'); count ++ });
-        const func = async () => { console.log('----'); count ++ }
+        const func = jest.fn().mockImplementation(async () => {});
         const dep = ref(0)
         Request(func, { refreshDeps: [dep] });
         await nextTick()
-        // expect(func).toHaveBeenCalledTimes(1)
-        expect(count).toBe(1)
+        expect(func).toHaveBeenCalledTimes(1)
         dep.value ++;
         await nextTick(); // why????
         await nextTick();
-        expect(count).toBe(2)
+        expect(func).toHaveBeenCalledTimes(2)
     })
 })
