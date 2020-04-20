@@ -1,7 +1,7 @@
 // import Vue from 'vue';
 // import VueCompositionApi from '@vue/composition-api';
 // Vue.use(VueCompositionApi);
-import { Request } from '../index'
+import { useRequest } from '../index'
 import * as sinon from 'sinon'
 import { nextTick, ref } from '@vue/runtime-core'
 
@@ -24,7 +24,7 @@ afterEach(() => {
 describe('request', () => {
     it('Request basic', async () => {
         const test = async () => {}
-        let { loading, data } = Request(test)
+        let { loading, data } = useRequest(test)
         expect(data.value).toBe(null)
         expect(loading.value).toBe(true)
     })
@@ -33,7 +33,7 @@ describe('request', () => {
         const test = async (args: any) => {
             return ['test', args].join('-')
         }
-        let { loading, data, run } = Request(test, {
+        let { loading, data, run } = useRequest(test, {
             manual: true,
             loading: true,
             data: 'test',
@@ -56,7 +56,7 @@ describe('request', () => {
         }
         let successData = null
         let errorInfo = null
-        let { data, run, error } = Request(test, {
+        let { data, run, error } = useRequest(test, {
             manual: true,
             onSuccess: (val: any) => {
                 successData = val
@@ -77,7 +77,7 @@ describe('request', () => {
         const test = async (args: any, num: any) => {
             return args + num
         }
-        let { run } = Request(test, { manual: true, params: 3 })
+        let { run } = useRequest(test, { manual: true, params: 3 })
         expect(await (run as Function)(1)).toBe(4)
     })
 
@@ -85,7 +85,7 @@ describe('request', () => {
         const normalFn = function (...arg: any) {
             return arg
         }
-        let { run } = Request(normalFn, { manual: true, params: 10 })
+        let { run } = useRequest(normalFn, { manual: true, params: 10 })
         const result = await (run as Function)(1, 2, 3, 4)
         expect(result.length).toBe(5)
         expect(result[0]).toBe(1)
@@ -99,7 +99,7 @@ describe('request', () => {
             count++
             return count
         }
-        const { run } = Request(normalFn, { manual: true, throttle: 100 })
+        const { run } = useRequest(normalFn, { manual: true, throttle: 100 })
         for (let i = 0; i < 101; i++) {
             clock.tick(1)
             ;(run as Function)()
@@ -111,7 +111,7 @@ describe('request', () => {
     // 防抖时间（ms）
     it('request options debounce', async () => {
         const normalFn = jest.fn().mockImplementation(async () => {})
-        const { run } = Request(normalFn, { manual: true, debounce: 100 })
+        const { run } = useRequest(normalFn, { manual: true, debounce: 100 })
         for (let i = 0; i < 10; i++) {
             clock.tick(1)
             ;(run as Function)()
@@ -126,7 +126,7 @@ describe('request', () => {
         const normalFn = function (...arg: any) {
             return arg
         }
-        let { run } = Request(normalFn, {
+        let { run } = useRequest(normalFn, {
             manual: true,
             format: (args) => {
                 return args.reduce(function (all: any, val: any) {
@@ -142,7 +142,7 @@ describe('request', () => {
         const normalFn = function (...arg: any) {
             return arg
         }
-        let { run } = Request(normalFn, {
+        let { run } = useRequest(normalFn, {
             manual: true,
             params: 10,
             format: (args) => {
@@ -163,7 +163,7 @@ describe('request', () => {
         const fn2 = function (num: number) {
             return num + 2
         }
-        let { run } = Request([fn1, fn2], { manual: true, async: false })
+        let { run } = useRequest([fn1, fn2], { manual: true, async: false })
         const result0 = await (run as Function)()
         expect(result0).toBe(3)
         const result = await (run as Function)(1)
@@ -178,7 +178,7 @@ describe('request', () => {
             return args
         }
 
-        const { run } = Request(fn, { manual: true, cacheKey: 'test' })
+        const { run } = useRequest(fn, { manual: true, cacheKey: 'test' })
         expect(await (run as Function)('default')).toBe('default')
         const fn2 = function (args: any) {
             return new Promise((resolve) => {
@@ -188,7 +188,7 @@ describe('request', () => {
             })
         }
 
-        const request = Request(fn2, { manual: true, cacheKey: 'test' })
+        const request = useRequest(fn2, { manual: true, cacheKey: 'test' })
 
         ;(request.run as Function)('normal').then(() => {
             expect(request.data.value).toBe('normal')
@@ -204,7 +204,7 @@ describe('request', () => {
             await sleep(100)
             return `${key}-${name}`;
         }
-        const { run, fetches } = Request(fn, { manual: true, key: id => id });
+        const { run, fetches } = useRequest(fn, { manual: true, key: id => id });
 
         (run as Function)('key', 'name').then(() => {
             expect((fetches as any).value.key.loading).toBe(false);
@@ -217,7 +217,7 @@ describe('request', () => {
     it('request options refreshDeps', async () => {
         const func = jest.fn().mockImplementation(async () => {});
         const dep = ref(0)
-        Request(func, { refreshDeps: [dep] });
+        useRequest(func, { refreshDeps: [dep] });
         await nextTick()
         expect(func).toHaveBeenCalledTimes(1)
         dep.value ++;

@@ -1,5 +1,9 @@
+// import debounce from 'lodash-es/debounce'
+// import throttle from 'lodash-es/throttle'
+
 import debounce from 'lodash.debounce'
 import throttle from 'lodash.throttle'
+
 import { OptionInstance } from './type'
 
 // noop
@@ -41,38 +45,3 @@ export function wrapperRun(option: OptionInstance, fn: (...arg: any) => any): (.
         return fn
     }
 }
-
-
-
-// // 执行同步或者异步函数
-// export async function execute(fn: Function, args: any = [], ctx?: Object): Promise<any> {
-//     if (type(fn) === 'AsyncFunction') {
-//         return await fn.apply(ctx || null, args)
-//     } else {
-//         const result = fn.apply(ctx || null, args)
-//         if (isPromise(result)) {
-//             return await result
-//         } else {
-//             return result
-//         }
-//     }
-// }
-
-// // 执行器，可以执行同步任务，异步任务队列
-// export async function executer(fnList: Array<execItem>, type: execType = execType.async): Promise<any> {
-//     if (type === execType.async) {
-//         return Promise.all(fnList.map((item) => execute(item.fn, item.args, item.ctx)))
-//     } else if (type === execType.asynchronous) {
-//         const fns = fnList.slice();
-//         let item = fns.shift()
-//         let result = null
-//         while (item) {
-//             result = await execute(item.fn, item.args, item.ctx)
-//             item = fns.shift();
-//             (item as any).args = [result];
-//         }
-//         return result
-//     }
-// }
-
-

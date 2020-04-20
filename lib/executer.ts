@@ -1,5 +1,5 @@
 import { execItem, execType, execResult } from './type'
-import { type, isPromise } from './helper'
+import { type, isPromise } from './helper';
 
 function asyncEach(asyncs: Array<any>, next: Function, callback: Function) {
     if (asyncs.length === 0) return callback(undefined, asyncs)

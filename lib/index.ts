@@ -1,5 +1,4 @@
-import { reactive, toRefs } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
+import { reactive, toRefs, watch } from 'vue'
 import { serializeMethod, serializeOption, mergeArgs } from './serialization'
 import { baseResult, api, Option, execType, execResult } from './type'
 import { wrapperRun, toArray } from './helper'
@@ -7,7 +6,7 @@ import { executer, execute } from './executer'
 
 const cache = Object.create(null)
 
-export function Request(method: api | api[], options: Option = {}): baseResult {
+export function useRequest(method: api | api[], options: Option = {}): baseResult {
     const serializedMethods = serializeMethod(method)
     const serializedOptions = serializeOption(options)
 
