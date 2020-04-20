@@ -7,7 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "jest",
+    "echo": "echo 1",
+    "test": "jest --coverage",
     "build": "rollup -c"
   },
   "repository": {
@@ -22,6 +23,9 @@
   "homepage": "https://github.com/felibs/reqeust#readme",
   "devDependencies": {
     "@types/jest": "^25.2.1",
+    "@types/lodash.debounce": "^4.0.6",
+    "@types/lodash.throttle": "^4.1.6",
+    "@types/sinon": "^9.0.0",
     "jest": "^25.3.0",
     "rollup": "^2.6.1",
     "ts-jest": "^25.3.1",
@@ -29,9 +33,11 @@
   },
   "dependencies": {
     "@vue/composition-api": "^0.5.0",
+    "@vue/reactivity": "^3.0.0-beta.2",
+    "@vue/runtime-core": "^3.0.0-beta.2",
     "axios": "^0.19.2",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
-    "vue": "^2.6.11"
+    "sinon": "^9.0.2"
   }
 }

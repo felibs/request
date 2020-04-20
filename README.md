@@ -13,13 +13,15 @@ option:
 - onError: Function, default: noop, // 失败回掉
 - loading: enum[true, false], default: false // 默认loading的值
 - data: any, default: null // 默认的数据
-- params: Any, default: null, // 请求的参数
+- params: object, default: {}, // 请求的参数
 - throttle: number, default: 0, // 节流时间（ms）
 - debounce: number, default: 0, // 防抖时间（ms）
 - format: Function， default: noop, //对结果进行转换
-- serial: enum[true, false], default: false // promise All是否并行，true：串行，false，并行
+- async: enum[true, false], default: true // 对于传入数组的API，是否异步执行，true：异步，false，同步，如果为false，则会把上一个函数的返回值传给下一个函数作为参数
 - cacheKey: string, // 对结果进行缓存, 全局, 预加载数据
 - key: key => key, // 可以实现多个loading
+- cancelToken: 
+- refreshDeps: []
 
 result:
 - loading: enum[true, false]  // 是否在请求中
@@ -27,6 +29,11 @@ result:
 - run: manual为true是手动触发的函数
 - error: Object，错误信息
 - cancel： Function， // 取消ajax函数
+
+关于params
+1、如果api为function， 则此function会接收多个参数，前部分为run的参数集合，最后一个为params
+2、如果api为string, 则
+
 
 demo1:
 自动执行

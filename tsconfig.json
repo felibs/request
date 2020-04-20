@@ -1,28 +1,22 @@
 {
     "compilerOptions": {
-      "baseUrl": ".",
-      "outDir": "dist",
-      "sourceMap": false,
-      "moduleResolution": "node",
-      "allowJs": false,
-      "strict": true,
-      "noUnusedLocals": true,
-      "experimentalDecorators": true,
-      "resolveJsonModule": true,
-      "esModuleInterop": true,
-      "removeComments": false,
-      "jsx": "preserve",
-      "types": ["jest", "puppeteer", "node"],
-      "rootDir": ".",
-      "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+        "baseUrl": ".",
+        "outDir": "dist",
+        "sourceMap": false,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "allowJs": false,
+        "strict": true,
+        "noUnusedLocals": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "removeComments": false,
+        "jsx": "preserve",
+        "types": ["jest", "puppeteer", "node"],
+        "rootDir": ".",
+        "lib": ["esnext", "dom", "dom.iterable", "scripthost", "ES2017.Object"]
     },
-    "include": [
-      "lib",
-      "lib/__tests__",
-      "test-dts"
-    ],
-    "exclude": [
-      "node_modules"
-    ]
-  }
-  
+    "include": ["lib", "lib/__tests__", "test-dts"],
+    "exclude": ["node_modules"]
+}
