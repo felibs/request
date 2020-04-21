@@ -17,12 +17,16 @@
         </div>
         <script>
             const { createApp, ref, watch, reactive, toRefs } = Vue
+            const sleep = timer => new Promise((resolve) => { setTimeout(() => { resolve()}, timer)})
 
             const App = {
                 setup() {
                     let count = 0
                     const { useRequest } = RequestHooks
-                    const { run, data, error, loading } = useRequest(() => count++, { manual: true });
+                    const { run, data, error, loading } = useRequest(async () => {
+                        await sleep(1000)
+                        return ++ count
+                    }, { manual: true, debounce: 300 })
                     return {
                         run,
                         data,

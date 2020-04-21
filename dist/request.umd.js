@@ -1039,9 +1039,9 @@
     function mergeArgs(methods, option, args) {
         return methods.map(function (item) {
             var _a;
+            var runParams = {};
             // api为string
             if (item.type === execItemType.string) {
-                var runParams = {};
                 if (typeof args === 'object' && args !== null) {
                     runParams = args;
                 }
@@ -1052,7 +1052,6 @@
                 (_a = item.args).push.apply(_a, __spread(toArray(args), toArray(option.params)));
             }
             else if (item.type === execItemType.axios) {
-                var runParams = {};
                 if (typeof args === 'object' && args !== null) {
                     runParams = args;
                 }
@@ -1060,6 +1059,7 @@
                 // todo 多种方法参数的支持
                 if (method === 'GET') {
                     item.args[0].params = Object.assign({}, option.params, item.args[0].params ? item.args[0].params : {}, runParams);
+                    item.args[0].method = 'GET';
                 }
                 else if (method === 'POST') {
                     item.args[0].data = Object.assign({}, option.params, item.args[0].data ? item.args[0].data : {}, runParams);
@@ -1071,7 +1071,7 @@
 
     function asyncEach(asyncs, next, callback) {
         if (asyncs.length === 0)
-            return callback(undefined, asyncs);
+            return callback(null, asyncs);
         var transformed = new Array(asyncs.length);
         var count = 0;
         var returned = false;
@@ -1144,9 +1144,6 @@
                     .then(function (_a) {
                     var data = _a.data, error = _a.error;
                     callbck(error, data);
-                })
-                    .catch(function (error) {
-                    callbck(error, null);
                 });
             }, function result(error, data) {
                 resolve({
@@ -1223,36 +1220,47 @@
             error: null,
             fetches: {},
         });
-        var setLoading = function (arg, status) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, data, error, fetcheState;
+        var setLoading = function (status, key) { return __awaiter(_this, void 0, void 0, function () {
+            var fetcheState;
+            return __generator(this, function (_a) {
+                if (serializedOptions.key) {
+                    if (key) {
+                        fetcheState = state.fetches[key] || { loading: false, data: null, error: null };
+                        state.fetches[key] = Object.assign(fetcheState, {
+                            loading: status,
+                        });
+                    }
+                }
+                else {
+                    state.loading = status;
+                }
+                return [2 /*return*/];
+            });
+        }); };
+        var getKey = function (arg) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, data, error;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         if (!serializedOptions.key) return [3 /*break*/, 2];
-                        return [4 /*yield*/, execute(serializedOptions.key, toArray(arg))];
+                        return [4 /*yield*/, execute(serializedOptions.key, toArray(arg))]; // 或者key
                     case 1:
-                        _a = _b.sent(), data = _a.data, error = _a.error;
-                        if (error === null && typeof data === 'string' && data) {
-                            fetcheState = state.fetches[data] || { loading: false, data: null, error: null };
-                            state.fetches[data] = Object.assign(fetcheState, {
-                                loading: status,
-                            });
+                        _a = _b.sent() // 或者key
+                        , data = _a.data, error = _a.error;
+                        if (error === null && typeof data === 'string' && data) { // 必须为string类型才可以作为Object的key
+                            return [2 /*return*/, data];
                         }
                         else {
                             throw Error('key function return no a string');
                         }
-                        return [3 /*break*/, 3];
-                    case 2:
-                        state.loading = status;
-                        _b.label = 3;
-                    case 3: return [2 /*return*/];
+                    case 2: return [2 /*return*/, ''];
                 }
             });
         }); };
-        var setResult = function (result, arg) { return __awaiter(_this, void 0, void 0, function () {
-            var formatResult, _a, data, error, fetcheState;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+        var setResult = function (result, key) { return __awaiter(_this, void 0, void 0, function () {
+            var formatResult, fetcheState;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         // 对返回结果进行format
                         serializedOptions.format[0].args = [result.data];
@@ -1260,30 +1268,23 @@
                             // 如果存在key，重置数据
                         ]; // 对结果进行format
                     case 1:
-                        formatResult = _b.sent() // 对结果进行format
+                        formatResult = _a.sent() // 对结果进行format
                         ;
-                        if (!serializedOptions.key) return [3 /*break*/, 3];
-                        return [4 /*yield*/, execute(serializedOptions.key, toArray(arg))]; // 或者key
-                    case 2:
-                        _a = _b.sent() // 或者key
-                        , data = _a.data, error = _a.error;
-                        if (error === null && typeof data === 'string' && data) { // 必须为string类型才可以作为Object的key
-                            fetcheState = state.fetches[data] || { loading: false, data: null, error: null };
-                            state.fetches[data] = Object.assign(fetcheState, { data: formatResult.data, error: result.error });
+                        // 如果存在key，重置数据
+                        if (serializedOptions.key) {
+                            if (key) { // 必须为string类型才可以作为Object的key
+                                fetcheState = state.fetches[key] || { loading: false, data: null, error: null };
+                                state.fetches[key] = Object.assign(fetcheState, { data: formatResult.data, error: result.error });
+                            }
                         }
                         else {
-                            throw Error('key function return no a string');
+                            state.data = formatResult.data;
+                            state.error = result.error;
+                            // 重置cache
+                            if (serializedOptions.cacheKey) {
+                                cache[serializedOptions.cacheKey] = state.data;
+                            }
                         }
-                        return [3 /*break*/, 4];
-                    case 3:
-                        state.data = formatResult.data;
-                        state.error = result.error;
-                        // 重置cache
-                        if (serializedOptions.cacheKey) {
-                            cache[serializedOptions.cacheKey] = state.data;
-                        }
-                        _b.label = 4;
-                    case 4:
                         // 执行回掉函数
                         if (result.error) {
                             serializedOptions.onError(state.error);
@@ -1291,9 +1292,9 @@
                         else {
                             serializedOptions.onSuccess(state.data); // 请求的参数
                         }
-                        return [4 /*yield*/, setLoading(arg, false)];
-                    case 5:
-                        _b.sent();
+                        return [4 /*yield*/, setLoading(false, key)];
+                    case 2:
+                        _a.sent();
                         return [2 /*return*/, formatResult.data];
                 }
             });
@@ -1308,32 +1309,26 @@
                 arg[_i] = arguments[_i];
             }
             return __awaiter(_this, void 0, void 0, function () {
-                var result, error_1;
+                var key, result;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, setLoading(arg, true)
-                            // 需要在执行executer函数前执行初始赋值操作
-                        ];
+                        case 0: return [4 /*yield*/, getKey(arg)];
                         case 1:
+                            key = _a.sent();
+                            return [4 /*yield*/, setLoading(true, key)
+                                // 需要在执行executer函数前执行初始赋值操作
+                            ];
+                        case 2:
                             _a.sent();
                             // 需要在执行executer函数前执行初始赋值操作
                             if (serializedOptions.cacheKey && Object.prototype.hasOwnProperty.call(cache, serializedOptions.cacheKey)) {
                                 state.data = cache[serializedOptions.cacheKey];
                             }
-                            result = null;
-                            _a.label = 2;
-                        case 2:
-                            _a.trys.push([2, 4, , 5]);
                             return [4 /*yield*/, executer(mergeArgs(serializedMethods, serializedOptions, arg), serializedOptions.async ? execType.async : execType.asynchronous)];
                         case 3:
                             result = _a.sent();
-                            return [3 /*break*/, 5];
-                        case 4:
-                            error_1 = _a.sent();
-                            console.log('error', error_1);
-                            return [3 /*break*/, 5];
-                        case 5: return [4 /*yield*/, setResult(result, arg)];
-                        case 6: return [2 /*return*/, _a.sent()];
+                            return [4 /*yield*/, setResult(result, key)];
+                        case 4: return [2 /*return*/, _a.sent()];
                     }
                 });
             });
