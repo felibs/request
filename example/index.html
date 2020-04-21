@@ -7,15 +7,13 @@
         <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
         <script src="https://unpkg.com/vue@3.0.0-beta.2/dist/vue.global.js"></script>
         <script src="../dist/request.umd.js"></script>
-        <!-- 通过yarn dev umd-dev 启动request.umd.js-->
     </head>
     <body>
         <div id="app">
-            data-> {{ data }}<br>
-            loading-> {{ loading }}<br>
-            error-> {{ error }}<br>
+            data-> {{ data }}<br />
+            loading-> {{ loading }}<br />
+            error-> {{ error }}<br />
             <button @click="run">按钮</button>
-            <button @click="change">按钮count</button>
         </div>
         <script>
             const { createApp, ref, watch, reactive, toRefs } = Vue
@@ -23,22 +21,13 @@
             const App = {
                 setup() {
                     let count = 0
-                    const getData = () => {
-                        return new Promise(resolve => {
-                            setTimeout(() => {
-                                resolve(count++)
-                            }, 2000)
-                        })
-                    }
-                    const { useRequest, useAjax } = RequestHooks
-
-                    const { run, data, error, loading } = useRequest(getData, { manual: true })
-                    
+                    const { useRequest } = RequestHooks
+                    const { run, data, error, loading } = useRequest(() => count++, { manual: true });
                     return {
                         run,
                         data,
                         error,
-                        loading
+                        loading,
                     }
                 },
             }

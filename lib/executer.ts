@@ -2,7 +2,7 @@ import { execItem, execType, execResult } from './type'
 import { type, isPromise } from './helper';
 
 function asyncEach(asyncs: Array<any>, next: Function, callback: Function) {
-    if (asyncs.length === 0) return callback(undefined, asyncs)
+    if (asyncs.length === 0) return callback(null, asyncs)
     const transformed = new Array(asyncs.length)
     let count = 0
     let returned = false
@@ -21,17 +21,17 @@ function asyncEach(asyncs: Array<any>, next: Function, callback: Function) {
 }
 
 // 执行同步或者异步函数
-export async function execute(fn: Function, args: any = [], ctx?: Object): Promise<execResult> {
+export async function execute(fn: Function, args: Array<any> = []): Promise<execResult> {
     let result: execResult = { data: null, error: null }
     if (type(fn) === 'AsyncFunction') {
         try {
-            result.data = await fn.apply(ctx || null, args)
+            result.data = await fn(...args)
         } catch (error) {
             result.error = error
         }
     } else {
         try {
-            let response = fn.apply(ctx || null, args)
+            let response = fn(...args)
             result.data = isPromise(response) ? await response : response
         } catch (error) {
             result.error = error
@@ -45,12 +45,9 @@ export function asyncExecuter(fnList: Array<execItem>): Promise<execResult> {
         asyncEach(
             fnList,
             function next(item: execItem, callbck: Function) {
-                execute(item.fn, item.args, item.ctx)
+                execute(item.fn, item.args)
                     .then(({ data, error }) => {
                         callbck(error, data)
-                    })
-                    .catch((error) => {
-                        callbck(error, null)
                     })
             },
             function result(error: any, data: any) {
@@ -71,7 +68,7 @@ export async function asynchronousExecuter(fnList: Array<execItem>): Promise<exe
     let hasError = false
 
     while (execItem && !hasError) {
-        const { data, error } = await execute(execItem.fn, execItem.args, execItem.ctx)
+        const { data, error } = await execute(execItem.fn, execItem.args)
         if (error) {
             hasError = true
             result.error = error

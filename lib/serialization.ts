@@ -64,9 +64,9 @@ export function serializeOption(option: Option): OptionInstance {
 
 export function mergeArgs(methods: execItem[], option: OptionInstance, args: any): execItem[] {
     return methods.map((item) => {
+        let runParams = {}
         // api为string
         if (item.type === execItemType.string) {
-            let runParams = {}
             if (typeof args === 'object' && args !== null) {
                 runParams = args
             }
@@ -75,7 +75,6 @@ export function mergeArgs(methods: execItem[], option: OptionInstance, args: any
             item.args = []; // 每次执行run，都需要重新合成参数
             (item.args as any).push(...toArray(args), ...toArray(option.params))
         } else if (item.type === execItemType.axios) {
-            let runParams = {}
             if (typeof args === 'object' && args !== null) {
                 runParams = args
             }
@@ -83,6 +82,7 @@ export function mergeArgs(methods: execItem[], option: OptionInstance, args: any
             // todo 多种方法参数的支持
             if (method === 'GET') {
                 ;(item.args as any)[0].params = Object.assign({}, option.params, (item.args as any)[0].params ? (item.args as any)[0].params : {}, runParams)
+                ;(item.args as any)[0].method = 'GET';
             } else if (method === 'POST') {
                 ;(item.args as any)[0].data = Object.assign({}, option.params, (item.args as any)[0].data ? (item.args as any)[0].data : {}, runParams)
             }

@@ -1,43 +1,45 @@
-// import { execute, executer } from '../executer';
-// import { execType } from '../type'
-
-import { execute } from '../executer';
-
+import { execute, asynchronousExecuter } from '../executer';
 
 describe('wrapper', () => {
-
     it('core execute function for promise or normal', async () => {
-        const asyncFn = async () => 1;
-        const normal = function() { return 'normal' };
-        const promiseFn = () => Promise.resolve(1)
-
-        expect((await execute(asyncFn)).data).toBe(1)
-        expect((await execute(normal)).data).toBe('normal')
-        expect((await execute(promiseFn)).data).toBe(1)
-
-        // 添加参数
-        const asyncFn1 = async (num: number) => 1 + num;
-        const normal1 = function(str: string) { return 'normal' + str };
-        const promiseFn1 = (num: number) => Promise.resolve(1 + num)
-        expect((await execute(asyncFn1, [-1])).data).toBe(0)
-        expect((await execute(normal1, ['-ok'])).data).toBe('normal-ok')
-        expect((await execute(promiseFn1, [-1])).data).toBe(0)
-
-        const scope = {
-            num: 1,
-            asyncFn2: async (num: number)  => {
-                return 1 + num
-            },
-            normal2: function() {
-                return this.num + 1
-            },
-            promiseFn2: function() {
-                return Promise.resolve(this.num + 1)
-            }
+        const asyncFn = async () => 1
+        const normal = function () {
+            return 'normal'
         }
-        expect((await execute(scope.asyncFn2, [-1], scope)).data).toBe(0)
-        expect((await execute(scope.normal2, null, scope)).data).toBe(2)
-        expect((await execute(scope.promiseFn2, null, scope)).data).toBe(2)
+        const promiseFn = () => Promise.resolve(1)
+        const error = function () {
+            throw new Error('error')
+        }
+        const genError = () => Promise.reject(1)
+
+        expect(await execute(asyncFn)).toMatchObject({ data: 1, error: null })
+        expect(await execute(normal)).toMatchObject({ data: 'normal', error: null })
+        expect(await execute(promiseFn)).toMatchObject({ data: 1, error: null })
+        expect(await execute(error)).toMatchObject({ data: null, error: new Error('error') })
+        expect(await execute(genError)).toMatchObject({ data: null, error: 1 })
+        
+        // 添加参数
+        const asyncFn1 = async (num: number) => 1 + num
+        const normal1 = function (str: string) {
+            return 'normal' + str
+        }
+        const promiseFn1 = (num: number) => Promise.resolve(1 + num)
+        
+        expect(await execute(asyncFn1, [-1])).toMatchObject({ data: 0, error: null })
+        expect(await execute(normal1, ['-ok'])).toMatchObject({ data: 'normal-ok', error: null })
+        expect(await execute(promiseFn1, [-1])).toMatchObject({ data: 0, error: null })
+    })
+
+    it('core asynchronousExecuter function', async () => {
+        const normal = function () {
+            return 'normal'
+        }
+        const error = function () {
+            throw new Error('error')
+        }
+        const fnList = [ { fn: error, ctx: null, args: [] }, { fn: normal, ctx: null, args: [] }, ]
+        const result = await asynchronousExecuter(fnList);
+        expect(result).toMatchObject({ error: new Error('error'), data: null })
     })
 
     // it('core function executer', async () => {

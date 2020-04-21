@@ -23,10 +23,12 @@ afterEach(() => {
 
 describe('request', () => {
     it('Request basic', async () => {
-        const test = async () => {}
-        let { loading, data } = useRequest(test)
-        expect(data.value).toBe(null)
-        expect(loading.value).toBe(true)
+        const fn = jest.fn()
+        useRequest(fn, {
+            onSuccess() {
+                expect(fn).toHaveBeenCalledTimes(1)
+            }
+        })
     })
 
     it('Request default loading or data or manual', async () => {
@@ -105,6 +107,7 @@ describe('request', () => {
             ;(run as Function)()
         }
         await nextTick()
+        await nextTick()
         expect(count).toBe(2)
     })
 
@@ -117,6 +120,7 @@ describe('request', () => {
             ;(run as Function)()
         }
         clock.tick(101)
+        await nextTick()
         await nextTick()
         expect(normalFn).toHaveBeenCalledTimes(1)
     })
@@ -210,6 +214,17 @@ describe('request', () => {
             expect((fetches as any).value.key.loading).toBe(false);
         })
         expect((fetches as any).value.key).toBe(undefined);
+
+        function errorFn () {
+            throw new Error('error')
+            return '1'
+        }
+        try {
+            const response = await useRequest(fn, { key: errorFn })
+            console.log('response', response.data.value)
+        } catch (error) {
+            console.log('error', error)
+        }
     })
 
 
@@ -219,10 +234,12 @@ describe('request', () => {
         const dep = ref(0)
         useRequest(func, { refreshDeps: [dep] });
         await nextTick()
+        await nextTick()
         expect(func).toHaveBeenCalledTimes(1)
         dep.value ++;
-        await nextTick(); // why????
-        await nextTick();
+        await nextTick(); // dep的改变
+        await nextTick(); // why
+        await nextTick()
         expect(func).toHaveBeenCalledTimes(2)
     })
 })

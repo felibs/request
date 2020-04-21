@@ -29,7 +29,7 @@
         "downlevelIteration": true,
         "noUnusedLocals": true
     },
-    "include": ["lib", "lib/__tests__"],
+    "include": ["lib"],
     "exclude": [
         "node_modules",
         "**/*.spec.ts"

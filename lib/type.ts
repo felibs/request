@@ -74,7 +74,6 @@ export type execItem = {
     initArgs?: Array<any>
 }
 
-
 export type execResult = {
     data: any
     error: any

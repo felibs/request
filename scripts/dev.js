@@ -5,8 +5,6 @@ const targets = args._
 const formats = args.formats || args.f
 const sourceMap = args.sourcemap || args.s
 
-console.log('args', args)
-
 execa(
     'rollup',
     [

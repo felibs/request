@@ -913,7 +913,6 @@
 
     var lodash_throttle = throttle;
 
-    // import debounce from 'lodash-es/debounce'
     // noop
     function noop() {
         var arg = [];
@@ -1092,7 +1091,7 @@
         });
     }
     // 执行同步或者异步函数
-    function execute(fn, args, ctx) {
+    function execute(fn, args) {
         if (args === void 0) { args = []; }
         return __awaiter(this, void 0, void 0, function () {
             var result, _a, error_1, response, _b, _c, error_2;
@@ -1105,7 +1104,7 @@
                     case 1:
                         _d.trys.push([1, 3, , 4]);
                         _a = result;
-                        return [4 /*yield*/, fn.apply(ctx || null, args)];
+                        return [4 /*yield*/, fn.apply(void 0, __spread(args))];
                     case 2:
                         _a.data = _d.sent();
                         return [3 /*break*/, 4];
@@ -1116,7 +1115,7 @@
                     case 4: return [3 /*break*/, 10];
                     case 5:
                         _d.trys.push([5, 9, , 10]);
-                        response = fn.apply(ctx || null, args);
+                        response = fn.apply(void 0, __spread(args));
                         _b = result;
                         if (!isPromise(response)) return [3 /*break*/, 7];
                         return [4 /*yield*/, response];
@@ -1141,7 +1140,7 @@
     function asyncExecuter(fnList) {
         return new Promise(function (resolve) {
             asyncEach(fnList, function next(item, callbck) {
-                execute(item.fn, item.args, item.ctx)
+                execute(item.fn, item.args)
                     .then(function (_a) {
                     var data = _a.data, error = _a.error;
                     callbck(error, data);
@@ -1170,7 +1169,7 @@
                         _b.label = 1;
                     case 1:
                         if (!(execItem && !hasError)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, execute(execItem.fn, execItem.args, execItem.ctx)];
+                        return [4 /*yield*/, execute(execItem.fn, execItem.args)];
                     case 2:
                         _a = _b.sent(), data = _a.data, error = _a.error;
                         if (error) {
@@ -1339,9 +1338,11 @@
                 });
             });
         };
+        // todo
         var cancel = function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
             return [2 /*return*/];
         }); }); };
+        // 保存配置信息
         var config = {};
         if (serializedOptions.manual === false) {
             run(serializedOptions.params);

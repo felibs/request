@@ -93,33 +93,31 @@ describe('serialization', () => {
             test,
             { url: 'path1', params: { paramsId: 1 }, data: { dataId: 2 } },
             { url: 'path2', method: 'POST' as Method, data: { dataId: 2 }, params: { paramsId: 1 } },
+            { url: 'path3', data: { dataId: 2 } },
+            { url: 'path4', method: 'POST' as Method, params: { paramsId: 1 } },
         ])
+
         const options = serializeOption({ params: { id: 0 } })
 
         const serialize1 = mergeArgs(methods, options, { runParmas: 2 })
-        expect(serialize1.length).toBe(4)
-        expect((serialize1[0].args as any)[0].params.id).toBe(0)
-        expect((serialize1[0].args as any)[0].url).toBe('path')
-        expect((serialize1[0].args as any)[0].method).toBe('GET')
-        expect((serialize1[0].args as any)[0].params.runParmas).toBe(2)
 
+        expect(serialize1.length).toBe(6)
+        expect((serialize1[0].args as any)[0]).toMatchObject({ params: { runParmas: 2, id: 0 }, url: 'path', method: 'GET' })
         expect(serialize1[1].fn.name).toBe('test')
-        expect((serialize1[1].args as any).length).toBe(2)
-        expect((serialize1[1].args as any)[0].runParmas).toBe(2)
-        expect((serialize1[1].args as any)[1].id).toBe(0)
-        
-        expect((serialize1[2].args as any)[0].params.paramsId).toBe(1)
-        expect((serialize1[2].args as any)[0].params.id).toBe(0)
-        expect((serialize1[2].args as any)[0].params.runParmas).toBe(2)
-        expect((serialize1[2].args as any)[0].data.dataId).toBe(2)
-        expect((serialize1[2].args as any)[0].url).toBe('path1')
-        expect((serialize1[2].args as any)[0].method).toBe(undefined)
+        expect(serialize1[1].args).toMatchObject(expect.arrayContaining([{ runParmas: 2 }, { id: 0 }]))
+        expect((serialize1[2].args as any)[0]).toMatchObject({ params: { runParmas: 2, id: 0, paramsId: 1 }, data: { dataId: 2 }, url: 'path1', method: 'GET' })
+        expect((serialize1[3].args as any)[0]).toMatchObject({ params: { paramsId: 1 }, data: { dataId: 2, runParmas: 2, id: 0 }, url: 'path2', method: 'POST' })
+        expect((serialize1[4].args as any)[0]).toMatchObject({ params: { runParmas: 2, id: 0 }, data: { dataId: 2 }, url: 'path3', method: 'GET' })
+        expect((serialize1[5].args as any)[0]).toMatchObject({ params: { paramsId: 1 }, data: { runParmas: 2, id: 0 }, url: 'path4', method: 'POST' })
 
-        expect((serialize1[3].args as any)[0].data.id).toBe(0)
-        expect((serialize1[3].args as any)[0].data.dataId).toBe(2)
-        expect((serialize1[3].args as any)[0].data.runParmas).toBe(2)
-        expect((serialize1[3].args as any)[0].params.paramsId).toBe(1)
-        expect((serialize1[3].args as any)[0].url).toBe('path2')
-        expect((serialize1[3].args as any)[0].method).toBe('POST')
+
+        const serialize2 = mergeArgs(methods, options, null);
+        expect(serialize2.length).toBe(6)
+        expect((serialize2[0].args as any)[0]).toMatchObject({ params: { id: 0 }, url: 'path', method: 'GET' })
+        expect(serialize2[1].args).toMatchObject(expect.arrayContaining([{ id: 0 }]))
+        expect((serialize2[2].args as any)[0]).toMatchObject({ params: { id: 0, paramsId: 1 }, data: { dataId: 2 }, url: 'path1', method: 'GET' })
+        expect((serialize2[3].args as any)[0]).toMatchObject({ params: { paramsId: 1 }, data: { dataId: 2, id: 0 }, url: 'path2', method: 'POST' })
+        expect((serialize2[4].args as any)[0]).toMatchObject({ params: { id: 0 }, data: { dataId: 2 }, url: 'path3', method: 'GET' })
+        expect((serialize2[5].args as any)[0]).toMatchObject({ params: { paramsId: 1 }, data: { id: 0 }, url: 'path4', method: 'POST' })
     })
 })

@@ -22,6 +22,7 @@ option:
 - key: key => key, // 可以实现多个loading
 - cancelToken: 
 - refreshDeps: []
+- delay: number
 
 result:
 - loading: enum[true, false]  // 是否在请求中
@@ -39,11 +40,14 @@ demo1:
 自动执行
 
 ```javascript
-import { request } from '@felibs/request-hooks'
+
+import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
-        const { data, loading, run, error } = request('/test/getUserName')
+        const getUser = async () => {};
+        const { data, loading, error } = request(getUser);
+        
         if (error) {
             return <p>error</p>
         } else if (loading) {
@@ -78,7 +82,7 @@ demo3:
 防抖函数
 
 ```javascript
-import { request } from '@felibs/request-hooks'
+import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
@@ -94,7 +98,7 @@ export default {
 demo4:
 节流函数
 ```javascript
-import { request } from '@felibs/request-hooks'
+import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
@@ -117,7 +121,7 @@ demo5:
 cache
 
 ```javascript
-import { request } from '@felibs/request-hooks'
+import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
@@ -134,7 +138,7 @@ demo5:
 format对结果进行format，接受一个schema
 
 ```javascript
-import { request } from '@felibs/request-hooks'
+import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
@@ -158,7 +162,7 @@ false: 同时发送所有的请求
 
 
 ```javascript
-import { request } from '@felibs/request-hooks'
+import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
@@ -177,7 +181,7 @@ cacheKey: 全局的预加载
 
 
 ```javascript
-import { request } from '@felibs/request-hooks'
+import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
@@ -196,7 +200,7 @@ demo7:
 key: 可以多个动态key
 
 ```javascript
-import { request } from '@felibs/request-hooks'
+import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
@@ -213,7 +217,7 @@ export default {
 对于目前@ued/request的适配
 
 ```javascript
-import { request } from '@felibs/request-hooks'
+import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
