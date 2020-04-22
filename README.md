@@ -1,3 +1,5 @@
+![Node.js CI](https://github.com/felibs/reqeust/workflows/Node.js%20CI/badge.svg?branch=master)
+
 # 对于 request 的设计
 const result = request(api, option)
 

@@ -48,6 +48,7 @@
         "@types/lodash.debounce": "^4.0.6",
         "@types/lodash.throttle": "^4.1.6",
         "@types/sinon": "^9.0.0",
+        "bl": "^4.0.2",
         "execa": "^4.0.0",
         "jest": "^25.3.0",
         "lint-staged": "^10.1.7",
