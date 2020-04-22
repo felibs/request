@@ -1,0 +1,6 @@
+ls:
+  ./{lib,__test__}:
+    .js: kebab-case
+    .ts: camelCase | PascalCase
+    .d.ts: camelCase
+    .spec.ts: camelCase | PascalCase

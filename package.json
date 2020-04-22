@@ -38,6 +38,7 @@
         ]
     },
     "devDependencies": {
+        "@ls-lint/ls-lint": "^1.8.1",
         "@microsoft/api-extractor": "^7.7.13",
         "@rollup/plugin-commonjs": "^11.1.0",
         "@rollup/plugin-json": "^4.0.3",
@@ -60,7 +61,8 @@
         "serve": "^11.3.0",
         "sinon": "^9.0.2",
         "ts-jest": "^25.3.1",
-        "typescript": "^3.8.3"
+        "typescript": "^3.8.3",
+        "yorkie": "^2.0.0"
     },
     "dependencies": {
         "@vue/composition-api": "^0.5.0",
