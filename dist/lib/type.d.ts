@@ -64,3 +64,4 @@ export declare type execResult = {
     data: any;
     error: any;
 };
+//# sourceMappingURL=type.d.ts.map

@@ -1,7 +1,7 @@
 // import Vue from 'vue';
 // import VueCompositionApi from '@vue/composition-api';
 // Vue.use(VueCompositionApi);
-import { useRequest } from '../index'
+import { useRequest } from '../lib/index'
 import * as sinon from 'sinon'
 import { nextTick, ref } from 'vue'
 
@@ -226,7 +226,6 @@ describe('request', () => {
             console.log('error', error)
         }
     })
-
 
     // 可以实现多个loading
     it('request options refreshDeps', async () => {

@@ -17,23 +17,3 @@ execa(
         stdio: 'inherit',
     }
 )
-
-// await execa(
-//     'rollup',
-//     [
-//         '-c',
-//         '--environment',
-//         [
-//             `COMMIT:${commit}`,
-//             `NODE_ENV:${env}`,
-//             `TARGET:${target}`,
-//             formats ? `FORMATS:${formats}` : ``,
-//             buildTypes ? `TYPES:true` : ``,
-//             prodOnly ? `PROD_ONLY:true` : ``,
-//             sourceMap ? `SOURCE_MAP:true` : ``,
-//         ]
-//             .filter(Boolean)
-//             .join(','),
-//     ],
-//     { stdio: 'inherit' }
-// )

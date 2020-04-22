@@ -1,4 +1,4 @@
-import { execute, asynchronousExecuter } from '../executer';
+import { execute, asynchronousExecuter } from '../lib/executer';
 
 describe('wrapper', () => {
     it('core execute function for promise or normal', async () => {

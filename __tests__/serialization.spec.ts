@@ -1,4 +1,4 @@
-import { serializeMethod, serializeOption, mergeArgs } from '../serialization'
+import { serializeMethod, serializeOption, mergeArgs } from '../lib/serialization'
 import axios from 'axios'
 import { Method } from 'axios'
 

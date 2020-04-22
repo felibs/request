@@ -1,5 +1,5 @@
-import { type, isPromise, resultFormat, wrapperRun } from '../helper';
-import { serializeOption } from '../serialization'
+import { type, isPromise, resultFormat, wrapperRun } from '../lib/helper';
+import { serializeOption } from '../lib/serialization'
 
 import * as sinon from 'sinon'
 
