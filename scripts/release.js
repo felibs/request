@@ -24,16 +24,21 @@ const runIfNotDry = isDryRun ? dryRun : run;
 
 const step = (msg) => console.log(chalk.cyan(msg));
 
-// 只在github actions中编译发布
-function getTagVersion() {
-    let tagVersion = "";
-    const GITHUBREF = `${process.env.GITHUB_REF}`;
+const registry = execa.sync("npm", ["config", "get", "registry"]).stdout;
+const registries = ['https://registry.npmjs.org', 'https://registry.yarnpkg.com']
+if (!registries.some(item => registry.startsWith(item))) {
+    throw new Error(`register isn't https://registry.npmjs.org, current register is ${registry}`)
+}
 
-    if (GITHUBREF && GITHUBREF.startsWith("refs/tags/v")) {
-        tagVersion = GITHUBREF.replace("refs/tags/v", "");
-    }
+// 只在github actions中编译发布
+function checkRegister() {
+    
+    console.log(registry)
+    // npm config get registry
     return tagVersion;
 }
+
+
 
 const versionIncrements = [
     "patch",
