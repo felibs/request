@@ -13,7 +13,6 @@
         "target": "es5",
         "lib": ["esnext", "dom", "dom.iterable", "scripthost", "ES2017.Object"],
         "declaration": true,
-        "declarationMap": true,
         "module": "esnext",
         "moduleResolution": "node",
         "skipLibCheck": true,

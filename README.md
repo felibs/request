@@ -22,16 +22,16 @@ option:
 - async: enum[true, false], default: true // 对于传入数组的API，是否异步执行，true：异步，false，同步，如果为false，则会把上一个函数的返回值传给下一个函数作为参数
 - cacheKey: string, // 对结果进行缓存, 全局, 预加载数据
 - key: key => key, // 可以实现多个loading
-- cancelToken: 
-- refreshDeps: []
-- delay: number
+- refreshDeps: array<ref>
+- delay: number // todo
+- cancelToken: // todo
 
 result:
 - loading: enum[true, false]  // 是否在请求中
 - data: any, // 请求的结果，
 - run: manual为true是手动触发的函数
 - error: Object，错误信息
-- cancel： Function， // 取消ajax函数
+- cancel： Function， // todo
 
 关于params
 1、如果api为function， 则此function会接收多个参数，前部分为run的参数集合，最后一个为params
