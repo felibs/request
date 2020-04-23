@@ -1,4 +1,13 @@
-![BUILD](https://github.com/felibs/reqeust/workflows/BUILD/badge.svg?branch=master)
+<p align="center">
+  <a href="https://github.com/felibs/request/actions"><img src="https://github.com/felibs/reqeust/workflows/BUILD/badge.svg?branch=master" alt="Build Status"></a>
+  <!-- <a href="https://www.npmjs.com/package/vue"><img src="https://img.shields.io/npm/dm/vue.svg" alt="Downloads"></a> -->
+  <a href="https://www.npmjs.com/package/@felibs/request"><img src="https://img.shields.io/npm/v/@felibs/request.svg" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/vue"><img src="https://img.shields.io/npm/l/@felibs/request.svg" alt="License"></a>
+</p>
+
+
+## hooks for vue3.x, easy to use request or async function, inspired by umijs/hooks
+
 
 # 对于 request 的设计
 const result = request(api, option)
@@ -65,16 +74,16 @@ demo2:
 手动执行
 
 ```javascript
-import { request } from "@felibs/request-hooks"
+import { useRequest } from "@felibs/request"
 
 export default {
     setup() {
-        const { loading, run, cancel, data } = request('/v1/data/getButtonText', {
+        const { loading, run, cancel, data } = useRequest('/v1/data/getButtonText', {
             manual: true,
         }, { config })
         return (
-            <button onClick="run" loading={ loading }>{ data }</button>
-            <button onClick="cancel" loading={ loading }>{ data }</button>
+            <button onClick={run} loading={ loading }>{ data }</button>
+            <button onClick={cancel} loading={ loading }>{ data }</button>
         )
     }
 }
@@ -88,11 +97,11 @@ import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
-        const { loading, run, data } = request('/v1/getUserByName', {
+        const { loading, run, data } = useRequest('/v1/getUserByName', {
             manual: true,
             debounce: 500,
         })
-        return <button onClick='run' loading={loading}>{ data }</button>
+        return <button onClick={run} loading={loading}> { data } </button>
     },
 }
 ```
@@ -104,63 +113,41 @@ import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
-        const { loading, run, data } = request('/v1/getUserByName', {
+        const { loading, run, data } = useRequest('/v1/getUserByName', {
             manual: true,
             throttle: 500,
-            params: {},
-            polling: 1000,
-            onError() {
-                
-            }
         })
-        return <button onClick='run' loading={loading}>{ data }</button>
+        return <button onClick={run} loading={loading}>{ data }</button>
     },
 }
 ```
 
 
+
 demo5:
-cache
+format对结果进行format
 
 ```javascript
 import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
-        const { loading, run, data } = request('/v1/getUserByName', {
+        const { loading, run, data } = useRequest('/v1/getUserByName', {
             manual: true,
-            throttle: 500,
-        })
-        return <button onClick='run' loading={loading}>{ data }</button>
-    },
-}
-```
-
-demo5:
-format对结果进行format，接受一个schema
-
-```javascript
-import { useRequest } from '@felibs/request'
-
-export default {
-    setup() {
-        const { loading, run, data } = request('/v1/getUserByName', {
-            manual: true,
-            format: (data) => {
-                return data.map(item => item)
+            format: (result) => {
+                return result.map(item => item)
             }
         })
-        return <button onClick='run' loading={loading}>{ data }</button>
+        return <button onClick={run} loading={loading}>{ data }</button>
     },
 }
 ```
 
 demo6:
-serial: 对传入的接口进行串行或者并行
+async: 对传入的接口进行串行或者并行
+default: true
 
-true：串行，false，并行
-true: 上一个请求完成，再发送下一个请求
-false: 同时发送所有的请求
+true：异步，false，同步，如果为false，则会把上一个函数的返回值传给下一个函数作为参数
 
 
 ```javascript
@@ -170,15 +157,15 @@ export default {
     setup() {
         const { loading, run, data } = request(['/v1/getUserByName', '/v1/getUserByName2'], {
             manual: true,
-            serial: true,
+            async: false,
         })
         // data为数组，数组的顺序跟返回的顺序一致
-        return <button onClick='run' loading={loading}>{ data }</button>
+        return <button onClick={run} loading={loading}>{ data }</button>
     },
 }
 ```
 
-demo6:
+demo7:
 cacheKey: 全局的预加载
 
 
@@ -187,18 +174,18 @@ import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
-        const { loading, run, data } = request('/v1/getUserByName2', {
+        const { loading, run, data } = useRequest('/v1/getUserByName2', {
             manual: true,
             cacheKey: 'globalUser',
         })
         // data为存储数据，等真正的接口返回时，它会动态改变
-        return <button onClick='run' loading={loading}>{ data }</button>
+        return <button onClick={run} loading={loading}>{ data }</button>
     },
 }
 ```
 
 
-demo7:
+demo8:
 key: 可以多个动态key
 
 ```javascript
@@ -206,28 +193,13 @@ import { useRequest } from '@felibs/request'
 
 export default {
     setup() {
-        const { loading, run, data } = request('/v1/getUserByName2', {
+        const { loading, run, data } = useRequest('/v1/getUserByName2', {
             manual: true,
             cacheKey: 'globalUser',
-        })
-        // data为存储数据，等真正的接口返回时，它会动态改变
-        return <button onClick='run' loading={loading}>{ data }</button>
-    },
-}
-```
-
-对于目前@ued/request的适配
-
-```javascript
-import { useRequest } from '@felibs/request'
-
-export default {
-    setup() {
-        const { loading, run, data } = request(this.$api.getUser, {
-            manual: true,
         })
         // data为存储数据，等真正的接口返回时，它会动态改变
         return <button onClick={run} loading={loading}>{ data }</button>
     },
 }
 ```
+
