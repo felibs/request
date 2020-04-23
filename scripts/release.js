@@ -24,6 +24,7 @@ const runIfNotDry = isDryRun ? dryRun : run;
 
 const step = (msg) => console.log(chalk.cyan(msg));
 
+// 发布到官方源
 const registry = execa.sync("npm", ["config", "get", "registry"]).stdout;
 const registries = ['https://registry.npmjs.org', 'https://registry.yarnpkg.com']
 if (!registries.some(item => registry.startsWith(item))) {

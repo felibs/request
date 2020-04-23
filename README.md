@@ -2,7 +2,7 @@
   <a href="https://github.com/felibs/request/actions"><img src="https://github.com/felibs/reqeust/workflows/BUILD/badge.svg?branch=master" alt="Build Status"></a>
   <!-- <a href="https://www.npmjs.com/package/vue"><img src="https://img.shields.io/npm/dm/vue.svg" alt="Downloads"></a> -->
   <a href="https://www.npmjs.com/package/@felibs/request"><img src="https://img.shields.io/npm/v/@felibs/request.svg" alt="Version"></a>
-  <a href="https://www.npmjs.com/package/vue"><img src="https://img.shields.io/npm/l/@felibs/request.svg" alt="License"></a>
+  <a href="https://www.npmjs.com/package/@felibs/request"><img src="https://img.shields.io/npm/l/@felibs/request.svg" alt="License"></a>
 </p>
 
 
