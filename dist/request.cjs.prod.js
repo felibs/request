@@ -1100,7 +1100,7 @@ function execute(fn, args) {
             switch (_d.label) {
                 case 0:
                     result = { data: null, error: null };
-                    if (!(type(fn) === 'AsyncFunction')) return [3 /*break*/, 5];
+                    if (!(type(fn) === "AsyncFunction")) return [3 /*break*/, 5];
                     _d.label = 1;
                 case 1:
                     _d.trys.push([1, 3, , 4]);
