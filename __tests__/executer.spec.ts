@@ -1,46 +1,67 @@
-import { execute, asynchronousExecuter } from '../lib/executer';
+import { execute, asynchronousExecuter } from "../lib/executer";
 
-describe('wrapper', () => {
-    it('core execute function for promise or normal', async () => {
-        const asyncFn = async () => 1
+describe("wrapper", () => {
+    it("core execute function for promise or normal", async () => {
+        const asyncFn = async () => 1;
         const normal = function () {
-            return 'normal'
-        }
-        const promiseFn = () => Promise.resolve(1)
+            return "normal";
+        };
+        const promiseFn = () => Promise.resolve(1);
         const error = function () {
-            throw new Error('error')
-        }
-        const genError = () => Promise.reject(1)
+            throw new Error("error");
+        };
+        const genError = () => Promise.reject(1);
 
-        expect(await execute(asyncFn)).toMatchObject({ data: 1, error: null })
-        expect(await execute(normal)).toMatchObject({ data: 'normal', error: null })
-        expect(await execute(promiseFn)).toMatchObject({ data: 1, error: null })
-        expect(await execute(error)).toMatchObject({ data: null, error: new Error('error') })
-        expect(await execute(genError)).toMatchObject({ data: null, error: 1 })
-        
+        expect(await execute(asyncFn)).toMatchObject({ data: 1, error: null });
+        expect(await execute(normal)).toMatchObject({
+            data: "normal",
+            error: null,
+        });
+        expect(await execute(promiseFn)).toMatchObject({
+            data: 1,
+            error: null,
+        });
+        expect(await execute(error)).toMatchObject({
+            data: null,
+            error: new Error("error"),
+        });
+        expect(await execute(genError)).toMatchObject({ data: null, error: 1 });
+
         // 添加参数
-        const asyncFn1 = async (num: number) => 1 + num
+        const asyncFn1 = async (num: number) => 1 + num;
         const normal1 = function (str: string) {
-            return 'normal' + str
-        }
-        const promiseFn1 = (num: number) => Promise.resolve(1 + num)
-        
-        expect(await execute(asyncFn1, [-1])).toMatchObject({ data: 0, error: null })
-        expect(await execute(normal1, ['-ok'])).toMatchObject({ data: 'normal-ok', error: null })
-        expect(await execute(promiseFn1, [-1])).toMatchObject({ data: 0, error: null })
-    })
+            return "normal" + str;
+        };
+        const promiseFn1 = (num: number) => Promise.resolve(1 + num);
 
-    it('core asynchronousExecuter function', async () => {
+        expect(await execute(asyncFn1, [-1])).toMatchObject({
+            data: 0,
+            error: null,
+        });
+        expect(await execute(normal1, ["-ok"])).toMatchObject({
+            data: "normal-ok",
+            error: null,
+        });
+        expect(await execute(promiseFn1, [-1])).toMatchObject({
+            data: 0,
+            error: null,
+        });
+    });
+
+    it("core asynchronousExecuter function", async () => {
         const normal = function () {
-            return 'normal'
-        }
+            return "normal";
+        };
         const error = function () {
-            throw new Error('error')
-        }
-        const fnList = [ { fn: error, ctx: null, args: [] }, { fn: normal, ctx: null, args: [] }, ]
+            throw new Error("error");
+        };
+        const fnList = [
+            { fn: error, ctx: null, args: [] },
+            { fn: normal, ctx: null, args: [] },
+        ];
         const result = await asynchronousExecuter(fnList);
-        expect(result).toMatchObject({ error: new Error('error'), data: null })
-    })
+        expect(result).toMatchObject({ error: new Error("error"), data: null });
+    });
 
     // it('core function executer', async () => {
     //     function fn (params: any): any {
@@ -72,4 +93,4 @@ describe('wrapper', () => {
     //     expect((await executer([{ fn: ctx.fn }], execType.asynchronous))).toBe(undefined)
     //     expect((await executer([{ fn: ctx.fn }, { fn: ctx2.fn, ctx: ctx}], execType.asynchronous))).toBe('undefined-ctx-name')
     // })
-})
+});

@@ -1,6 +1,6 @@
 {
   "name": "@felibs/request",
-  "version": "0.1.2",
+  "version": "0.0.0",
   "description": "hooks for vue3.x, easy to use request or async function, inspired by umijs/hooks",
   "main": "dist/request.cjs.js",
   "types": "dist/request.d.ts",
@@ -36,11 +36,11 @@
     "commit-msg": "node scripts/verifyCommit.js"
   },
   "lint-staged": {
-    "*.js": [
+    "{lib,__tests__}/*.js": [
       "prettier --tab-width 4 --write",
       "git add"
     ],
-    "*.ts?(x)": [
+    "{lib,__tests__}/*.ts?(x)": [
       "prettier --parser=typescript --tab-width 4 --write",
       "git add"
     ]
