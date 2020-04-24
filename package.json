@@ -1,6 +1,6 @@
 {
   "name": "@felibs/request",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "hooks for vue3.x, easy to use request or async function, inspired by umijs/hooks",
   "main": "dist/request.cjs.js",
   "types": "dist/request.d.ts",

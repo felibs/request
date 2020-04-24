@@ -159,7 +159,7 @@ async function publishPackage(version, runIfNotDry) {
     try {
         await runIfNotDry(
             "yarn",
-            ["publish", "--new-version", version, "--access", "public"],
+            ["publish", "--new-version", version, "--access", "public", "--registry" , "https://registry.npmjs.org/"],
             {
                 cwd: root,
                 stdio: "pipe",
