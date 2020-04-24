@@ -1,6 +1,6 @@
 {
   "name": "@felibs/request",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "hooks for vue3.x, easy to use request or async function, inspired by umijs/hooks",
   "main": "dist/request.cjs.js",
   "types": "dist/request.d.ts",
@@ -11,7 +11,16 @@
   },
   "files": [
     "index.js",
-    "dist"
+    "dist",
+    "lib"
+  ],
+  "keywords": [
+    "vue",
+    "request",
+    "axios",
+    "hooks",
+    "vue hooks",
+    "vue3"
   ],
   "scripts": {
     "serve": "serve",
