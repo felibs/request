@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title></title>
+        <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/vue@3.0.0-beta.4/dist/vue.global.js"></script>
+        <script src="https://unpkg.com/mockjs@1.1.0/dist/mock-min.js"></script>
+        <script src="../dist/request.global.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            data: {{ data }}
+            <br>
+            loading: {{ loading }}
+            <br>
+            error: {{ error }}
+            <br>
+            <p>4秒后，loading变为false， data为 { user: "USER" }</p>
+        </div>
+        <script>
+            const { useRequest } = RequestHooks
+            const { createApp } = Vue
+            const  sleep = timer => new Promise(resolve => setTimeout(resolve, timer));
+            const App = {
+                setup() {
+                    const getUser = async () => { 
+                        await sleep(4000)
+                        return { user: 'USER '}
+                    }
+                    const { data, loading, error } = useRequest(getUser)
+                    return {
+                        data,
+                        loading,
+                        error
+                    }
+                },
+            }
+            createApp(App).mount('#app')
+        </script>
+    </body>
+</html>

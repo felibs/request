@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title></title>
+        <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/vue@3.0.0-beta.4/dist/vue.global.js"></script>
+        <script src="https://unpkg.com/mockjs@1.1.0/dist/mock-min.js"></script>
+        <script src="../dist/request.global.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            data: {{ data }}
+            <br>
+            loading: {{ loading }}
+            <br>
+            <button @click="run">执行run</button>
+        </div>
+        <script>
+            const { useRequest } = RequestHooks
+            const { createApp } = Vue
+            const  sleep = timer => new Promise(resolve => setTimeout(resolve, timer));
+            const App = {
+                setup() {
+                    const getUser = async () => { 
+                        await sleep(2000)
+                        return {
+                            user: Mock.Random.string(10)
+                        }
+                    }
+
+                    const { data, loading, run } = useRequest(getUser, {
+                        manual: true
+                    })
+                    
+                    return {
+                        data,
+                        loading,
+                        run
+                    }
+                },
+            }
+            createApp(App).mount('#app')
+        </script>
+    </body>
+</html>

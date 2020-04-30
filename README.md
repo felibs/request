@@ -9,6 +9,11 @@
 ## hooks for vue3.x, easy to use request or async function, inspired by umijs/hooks
 
 
+## demo
+
+https://codesandbox.io/s/example-g65t0?file=/index.html
+
+
 # 对于 request 的设计
 const result = request(api, option)
 
@@ -183,6 +188,8 @@ export default {
     },
 }
 ```
+
+
 
 
 demo8:
